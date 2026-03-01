@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Sistema de Vida</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #18181f;
+    --border: #22222e;
+    --gold: #c9a84c;
+    --gold-soft: #e8d5a3;
+    --white: #f0ede8;
+    --muted: #666070;
+    --green: #4caf7d;
+    --blue: #5b8dd9;
+    --rose: #c96b6b;
+    --purple: #9b72cf;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 2rem;
+    display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;
+  }
+  nav span { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--gold); margin-right: 1rem; font-style: italic; }
+  nav a {
+    font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; padding: 0.3rem 0.8rem;
+    border-radius: 2px; transition: all 0.2s;
+  }
+  nav a:hover { color: var(--white); background: var(--surface2); }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 300; line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero p {
+    max-width: 560px; margin: 0 auto;
+    color: var(--muted); font-size: 0.95rem; line-height: 1.7; font-weight: 300;
+  }
+  .divider {
+    width: 40px; height: 1px; background: var(--gold);
+    margin: 2rem auto;
+  }
+
+  /* SECTIONS */
+  section { padding: 3rem 2rem; max-width: 900px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 400; margin-bottom: 2rem;
+  }
+
+  /* IDENTITY PILLARS */
+  .pillars { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .pillar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 1.4rem;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, transform 0.2s;
+    animation: fadeUp 0.5s ease both;
+  }
+  .pillar:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .pillar-icon { font-size: 1.4rem; margin-bottom: 0.8rem; }
+  .pillar h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; margin-bottom: 0.4rem; color: var(--gold-soft); }
+  .pillar p { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
+
+  /* DECLARATION */
+  .declaration {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 6px; padding: 2rem;
+    margin-bottom: 1rem;
+  }
+  .declaration p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-style: italic;
+    line-height: 1.8; color: var(--gold-soft);
+  }
+
+  /* METAS */
+  .metas { display: grid; gap: 1rem; }
+  .meta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 1.5rem;
+    display: grid; grid-template-columns: auto 1fr;
+    gap: 1.2rem; align-items: start;
+    transition: border-color 0.2s;
+  }
+  .meta-card:hover { border-color: var(--border); }
+  .meta-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 300;
+    color: var(--border); line-height: 1;
+    min-width: 40px;
+  }
+  .meta-card:nth-child(1) .meta-num { color: rgba(201,168,76,0.3); }
+  .meta-card:nth-child(2) .meta-num { color: rgba(76,175,125,0.3); }
+  .meta-card:nth-child(3) .meta-num { color: rgba(91,141,217,0.3); }
+  .meta-tag {
+    display: inline-block; font-size: 0.65rem; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 0.15rem 0.5rem;
+    border-radius: 2px; margin-bottom: 0.5rem;
+  }
+  .tag-gold { background: rgba(201,168,76,0.1); color: var(--gold); }
+  .tag-green { background: rgba(76,175,125,0.1); color: var(--green); }
+  .tag-blue { background: rgba(91,141,217,0.1); color: var(--blue); }
+  .meta-card h3 { font-size: 1rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .meta-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  /* ROUTINE */
+  .routine-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .routine-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 1.4rem;
+  }
+  .routine-block h3 {
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 1rem; padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .time-block {
+    display: flex; gap: 0.8rem; align-items: flex-start;
+    margin-bottom: 0.8rem; padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .time-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .time { font-size: 0.72rem; color: var(--gold); font-weight: 500; min-width: 70px; padding-top: 1px; }
+  .time-content h4 { font-size: 0.87rem; font-weight: 500; margin-bottom: 0.15rem; }
+  .time-content p { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    margin-top: 5px; flex-shrink: 0;
+  }
+  .dot-gold { background: var(--gold); }
+  .dot-green { background: var(--green); }
+  .dot-blue { background: var(--blue); }
+  .dot-purple { background: var(--purple); }
+  .dot-rose { background: var(--rose); }
+  .dot-muted { background: var(--muted); }
+
+  /* WEEKLY TRACKER */
+  .tracker-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  thead th {
+    padding: 0.6rem 0.8rem; text-align: left;
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 1px solid var(--border);
+    font-weight: 400;
+  }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.15s; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody td { padding: 0.7rem 0.8rem; color: var(--white); vertical-align: middle; }
+  tbody td:first-child { color: var(--muted); font-size: 0.75rem; }
+  .check-cell { text-align: center; }
+  .check {
+    width: 20px; height: 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 3px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; transition: all 0.2s; user-select: none;
+  }
+  .check.done { background: var(--green); border-color: var(--green); color: #fff; }
+  .check.skip { background: rgba(201,107,107,0.2); border-color: var(--rose); color: var(--rose); }
+  .day-header { font-size: 0.72rem; font-weight: 500; }
+  .sat { color: var(--gold) !important; font-style: italic; }
+
+  /* REGLA */
+  .regla {
+    background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 6px; padding: 1.5rem 1.8rem;
+    margin-top: 2rem;
+  }
+  .regla h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; color: var(--gold-soft); margin-bottom: 1rem;
+  }
+  .regla ul { list-style: none; }
+  .regla ul li {
+    font-size: 0.85rem; color: var(--muted); padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex; gap: 0.6rem;
+  }
+  .regla ul li::before { content: '—'; color: var(--gold); flex-shrink: 0; }
+  .regla ul li:last-child { border-bottom: none; }
+
+  /* BREAKFAST */
+  .breakfast-section { margin-top: 0.8rem; }
+  .breakfast-label {
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.6rem;
+  }
+  .breakfast-item {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin-bottom: 0.5rem; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: 0.4rem 0.6rem;
+  }
+  .breakfast-item input[type="text"] {
+    background: transparent; border: none; outline: none;
+    font-family: 'Outfit', sans-serif; font-size: 0.82rem;
+    color: var(--white); flex: 1;
+  }
+  .breakfast-item input[type="text"]::placeholder { color: var(--muted); font-style: italic; }
+  .breakfast-item a.recipe-link {
+    font-size: 0.7rem; color: var(--gold); text-decoration: none;
+    white-space: nowrap; opacity: 0.8;
+  }
+  .breakfast-item a.recipe-link:hover { opacity: 1; }
+  .link-input {
+    background: transparent; border: none; border-bottom: 1px solid var(--border);
+    outline: none; font-family: 'Outfit', sans-serif; font-size: 0.72rem;
+    color: var(--gold); width: 120px;
+  }
+  .link-input::placeholder { color: var(--muted); }
+  .del-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 0.9rem; padding: 0 0.2rem;
+    line-height: 1; transition: color 0.2s;
+  }
+  .del-btn:hover { color: var(--rose); }
+  .add-btn {
+    margin-top: 0.5rem; background: transparent;
+    border: 1px dashed var(--border); border-radius: 4px;
+    color: var(--muted); font-size: 0.75rem; padding: 0.3rem 0.8rem;
+    cursor: pointer; font-family: 'Outfit', sans-serif;
+    transition: all 0.2s; width: 100%;
+  }
+  .add-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .pillar:nth-child(1) { animation-delay: 0.05s; }
+  .pillar:nth-child(2) { animation-delay: 0.1s; }
+  .pillar:nth-child(3) { animation-delay: 0.15s; }
+  .pillar:nth-child(4) { animation-delay: 0.2s; }
+  .pillar:nth-child(5) { animation-delay: 0.25s; }
+  .pillar:nth-child(6) { animation-delay: 0.3s; }
+
+  @media (max-width: 600px) {
+    .routine-grid { grid-template-columns: 1fr; }
+    nav a { font-size: 0.68rem; padding: 0.25rem 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span>Mi Sistema</span>
+  <a href="#identidad">Identidad</a>
+  <a href="#metas">Metas</a>
+  <a href="#rutina">Rutina</a>
+  <a href="#tracker">Tracker</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Sistema de vida · 2026</div>
+  <h1>No me organizo.<br>Me <em>reconecto.</em></h1>
+  <div class="divider"></div>
+  <p>Este no es un sistema de productividad. Es un sistema de identidad. Cada día que lo usas no estás siendo más "eficiente" — estás siendo más tú.</p>
+</div>
+
+<!-- IDENTIDAD -->
+<section id="identidad">
+  <div class="section-label">Capa 1</div>
+  <div class="section-title">Quién soy</div>
+
+  <div class="declaration">
+    <p>"Soy un hombre con paz interna, centrado y emocionalmente inteligente. Una presencia que transmite luz, salud y amor. Un creador disciplinado y consistente que lidera con su ejemplo, su contenido y su energía. Vivo con propósito, lejos de impulsos, excesos y ruido mental."</p>
+  </div>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-icon">🔥</div>
+      <h3>Cuerpo</h3>
+      <p>Mi cuerpo es el primer lienzo. Lo que le doy de comer, cómo lo muevo, cómo lo cuido — define cómo pienso, cómo creo, cómo me muestro al mundo.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">🎙️</div>
+      <h3>Creatividad</h3>
+      <p>Soy un creador. Mi voz, mis ideas y mi perspectiva tienen valor. Crear no es opcional — es mi forma de existir y de conectar con otros.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">🧠</div>
+      <h3>Mente</h3>
+      <p>Mi mente es poderosa cuando está en calma. La nutrición mental — lo que leo, escucho y a quién sigo — determina la calidad de mis pensamientos.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">✨</div>
+      <h3>Espiritualidad</h3>
+      <p>Tengo una fuente mayor. La conexión con Dios me centra, me da propósito y me recuerda que no estoy solo en este proceso.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">👑</div>
+      <h3>Identidad & Marca</h3>
+      <p>Estoy construyendo quién soy públicamente. Mi marca personal es el puente entre mi mundo interior y el impacto que quiero tener.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">🌱</div>
+      <h3>Acción sobre consumo</h3>
+      <p>Tengo suficiente información. Es momento de crear, no de acumular. Cada día de acción vale más que mil horas de consumo pasivo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- METAS -->
+<section id="metas">
+  <div class="section-label">Capa 2 · Próximos 6 meses</div>
+  <div class="section-title">Mis 3 grandes metas</div>
+
+  <div class="metas">
+    <div class="meta-card">
+      <div class="meta-num">01</div>
+      <div>
+        <div class="meta-tag tag-gold">Cuerpo</div>
+        <h3>Dieta + ejercicio como estilo de vida</h3>
+        <p>Dieta cumplida lunes a viernes y domingos. Sábado es descanso, no culpa. Ejercicio 3-4 veces/semana las primeras 3 semanas, escalando progresivamente. El objetivo no es el peso — es la energía y la claridad mental que genera.</p>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-num">02</div>
+      <div>
+        <div class="meta-tag tag-green">Creatividad</div>
+        <h3>Lanzar mi podcast y definir mi marca personal</h3>
+        <p>Usar el Mac y el micrófono que ya tengo. Tomar el curso de podcasting. Publicar los primeros 3 episodios antes de los 6 meses. Clarificar mi nicho, mi voz y mi propuesta de valor como creador.</p>
+      </div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-num">03</div>
+      <div>
+        <div class="meta-tag tag-blue">Mente</div>
+        <h3>Pasar de consumir a crear consistentemente</h3>
+        <p>Máximo 30 min de consumo educativo al día — el resto es práctica. Aplicar una cosa nueva por semana de lo aprendido. Reducir el ruido mental: redes sociales con intención, no por impulso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RUTINA -->
+<section id="rutina">
+  <div class="section-label">Capa 3 · Horario 10am–7pm</div>
+  <div class="section-title">Rutina mínima viable</div>
+
+  <div class="routine-grid">
+    <div class="routine-block">
+      <h3>🌅 Mañana (antes del trabajo)</h3>
+      <div class="time-block">
+        <div class="dot dot-gold"></div>
+        <div class="time">6:00 – 6:30</div>
+        <div class="time-content">
+          <h4>Despertar intencional</h4>
+          <p>Sin teléfono los primeros 10 min. Agua, respiración, 1 minuto de gratitud.</p>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="dot dot-purple"></div>
+        <div class="time">6:30 – 6:50</div>
+        <div class="time-content">
+          <h4>Momento espiritual</h4>
+          <p>Oración, meditación, lectura espiritual o journaling. Tu ancla del día.</p>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="dot dot-green"></div>
+        <div class="time">6:50 – 8:10</div>
+        <div class="time-content">
+          <h4>Ejercicio (L/M/J/V o M/J/S)</h4>
+          <p>3-4 veces/semana. Los días sin gym: caminar 20 min mínimo.</p>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="dot dot-muted"></div>
+        <div class="time">8:10 – 9:30</div>
+        <div class="time-content">
+          <h4>Preparación & desayuno</h4>
+          <div class="breakfast-section">
+            <div class="breakfast-label">Opciones de desayuno</div>
+            <div id="breakfast-list"></div>
+            <button class="add-btn" onclick="addBreakfast()">+ Añadir opción</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="routine-block">
+      <h3>🌆 Noche (después del trabajo)</h3>
+      <div class="time-block">
+        <div class="dot dot-blue"></div>
+        <div class="time">7:00 – 7:30</div>
+        <div class="time-content">
+          <h4>Descompresión</h4>
+          <p>Cena de dieta. Sin pantallas 15 min. Transición del modo trabajo al modo creador.</p>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="dot dot-gold"></div>
+        <div class="time">7:30 – 9:00</div>
+        <div class="time-content">
+          <h4>Bloque creativo / podcast</h4>
+          <p>Grabar, editar, planear contenido, estudiar el curso. Solo 1 tarea por noche.</p>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="dot dot-purple"></div>
+        <div class="time">9:00 – 9:20</div>
+        <div class="time-content">
+          <h4>Revisión del día</h4>
+          <p>¿Qué hice bien hoy? ¿Qué hago mañana? 3 líneas máximo en tu diario.</p>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="dot dot-muted"></div>
+        <div class="time">9:20 – 10:00</div>
+        <div class="time-content">
+          <h4>Cierre nocturno</h4>
+          <p>Sin redes. Lectura, música o algo que relaje. Dormir antes de las 10:30pm.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="regla">
+    <h3>⚡ Las reglas de oro (para el TDAH)</h3>
+    <ul>
+      <li>Una sola tarea creativa por noche. No una lista, una.</li>
+      <li>Si fallas un día, el siguiente día empiezas de cero sin culpa.</li>
+      <li>El sábado es sagrado. Descanso real, sin culpa ni recuperación forzada.</li>
+      <li>30 minutos de consumo educativo máximo al día. El resto es crear.</li>
+      <li>El teléfono no entra al cuarto después de las 9:30pm.</li>
+      <li>Cuando no tengas motivación, haz la versión mínima: 10 min de gym, 15 min de podcast. El hábito primero, la intensidad después.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- TRACKER -->
+<section id="tracker">
+  <div class="section-label">Capa 4 · Esta semana</div>
+  <div class="section-title">Tracker semanal</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.8rem;">
+    <p style="font-size:0.83rem;color:var(--muted);">Haz clic en cada celda: ✓ cumplido · ✗ saltado · vacío = pendiente</p>
+    <div style="display:flex;gap:0.6rem;align-items:center;">
+      <span id="week-label" style="font-size:0.72rem;color:var(--gold);"></span>
+      <button onclick="showHistory()" style="background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-family:'Outfit',sans-serif;font-size:0.72rem;padding:0.3rem 0.8rem;border-radius:3px;cursor:pointer;">Ver historial</button>
+    </div>
+  </div>
+
+  <div class="tracker-wrap">
+    <table id="tracker-table">
+      <thead>
+        <tr>
+          <th>Hábito</th>
+          <th class="day-header">Lun</th>
+          <th class="day-header">Mar</th>
+          <th class="day-header">Mié</th>
+          <th class="day-header">Jue</th>
+          <th class="day-header">Vie</th>
+          <th class="day-header sat">Sáb ☀️</th>
+          <th class="day-header">Dom</th>
+        </tr>
+      </thead>
+      <tbody id="tracker-body"></tbody>
+    </table>
+  </div>
+
+  <div id="history-panel" style="margin-top:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.2rem;display:none;"></div>
+  <script>
+    document.querySelector('button[onclick="showHistory()"]').addEventListener('click', function() {
+      const p = document.getElementById('history-panel');
+      p.style.display = p.style.display === 'none' ? 'block' : 'none';
+      if (p.style.display === 'block') showHistory();
+    });
+  </script>
+
+<div style="height:4rem;"></div>
+
+<script>
+const habits = [
+  { name: "Despertar sin teléfono", sat: true },
+  { name: "Momento espiritual", sat: true },
+  { name: "Ejercicio / movimiento", sat: true },
+  { name: "Dieta cumplida", sat: false },
+  { name: "Bloque creativo / podcast", sat: false },
+  { name: "Revisión del día (diario)", sat: true },
+  { name: "Sin redes después 9:30pm", sat: true },
+];
+
+const days = ['lun','mar','mie','jue','vie','sab','dom'];
+
+// --- STORAGE HELPERS ---
+async function save(key, value) {
+  try { await window.storage.set(key, JSON.stringify(value)); } catch(e) {}
+}
+async function load(key, fallback) {
+  try {
+    const r = await window.storage.get(key);
+    return r ? JSON.parse(r.value) : fallback;
+  } catch(e) { return fallback; }
+}
+
+// --- WEEK KEY (e.g. "2026-W09") ---
+function getWeekKey() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  const week = Math.ceil(((now - start) / 86400000 + start.getDay() + 1) / 7);
+  return `tracker-${now.getFullYear()}-W${String(week).padStart(2,'0')}`;
+}
+
+// --- TRACKER STATE ---
+let trackerState = {};
+let weekKey = getWeekKey();
+
+async function initTracker() {
+  const saved = await load(weekKey, {});
+  trackerState = saved;
+  renderTracker();
+  updateWeekLabel();
+}
+
+function updateWeekLabel() {
+  const el = document.getElementById('week-label');
+  if (el) el.textContent = `Semana activa: ${weekKey}`;
+}
+
+function renderTracker() {
+  const tbody = document.getElementById('tracker-body');
+  tbody.innerHTML = '';
+  habits.forEach((h, hi) => {
+    const tr = document.createElement('tr');
+    let cells = `<td>${h.name}</td>`;
+    days.forEach((d) => {
+      const key = `${hi}-${d}`;
+      const s = trackerState[key] || 0;
+      const isSat = d === 'sab';
+      const isOff = isSat && !h.sat;
+      if (isOff) {
+        cells += `<td class="check-cell"><span style="color:var(--border);font-size:0.7rem;">—</span></td>`;
+      } else {
+        const cls = s === 1 ? 'done' : s === 2 ? 'skip' : '';
+        const icon = s === 1 ? '✓' : s === 2 ? '✗' : '';
+        cells += `<td class="check-cell"><div class="check ${cls}" onclick="toggleCheck('${key}')">${icon}</div></td>`;
+      }
+    });
+    tr.innerHTML = cells;
+    tbody.appendChild(tr);
+  });
+}
+
+async function toggleCheck(key) {
+  trackerState[key] = ((trackerState[key] || 0) + 1) % 3;
+  await save(weekKey, trackerState);
+  renderTracker();
+}
+
+// --- HISTORY ---
+async function showHistory() {
+  const panel = document.getElementById('history-panel');
+  panel.innerHTML = '<p style="color:var(--muted);font-size:0.8rem;">Cargando historial...</p>';
+  try {
+    const keys = await window.storage.list('tracker-');
+    if (!keys || keys.keys.length === 0) {
+      panel.innerHTML = '<p style="color:var(--muted);font-size:0.8rem;">Aún no hay semanas anteriores guardadas.</p>';
+      return;
+    }
+    let html = '';
+    for (const k of keys.keys.sort().reverse()) {
+      const data = await load(k, {});
+      const done = Object.values(data).filter(v => v === 1).length;
+      const total = Object.values(data).filter(v => v !== 0).length;
+      const pct = total > 0 ? Math.round((done/total)*100) : 0;
+      const color = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--gold)' : 'var(--rose)';
+      html += `<div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:0.8rem;color:var(--muted)">${k.replace('tracker-','')}</span>
+        <span style="font-size:0.85rem;font-weight:500;color:${color}">${done} ✓ &nbsp;·&nbsp; ${pct}%</span>
+      </div>`;
+    }
+    panel.innerHTML = html || '<p style="color:var(--muted);font-size:0.8rem;">Sin datos aún.</p>';
+  } catch(e) {
+    panel.innerHTML = '<p style="color:var(--muted);font-size:0.8rem;">Error cargando historial.</p>';
+  }
+}
+
+// --- BREAKFAST ---
+let breakfasts = [];
+
+async function initBreakfast() {
+  breakfasts = await load('breakfasts', [
+    { name: "Avena con frutas", link: "" },
+    { name: "Huevos revueltos + aguacate", link: "" },
+  ]);
+  renderBreakfast();
+}
+
+function renderBreakfast() {
+  const list = document.getElementById('breakfast-list');
+  list.innerHTML = '';
+  breakfasts.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'breakfast-item';
+    div.innerHTML = `
+      <input type="text" value="${item.name}" placeholder="Nombre del desayuno..."
+        onchange="breakfasts[${i}].name=this.value; saveBreakfast()" />
+      <input class="link-input" type="text" value="${item.link}" placeholder="Pega link receta..."
+        onchange="breakfasts[${i}].link=this.value; saveBreakfast(); renderBreakfast()" />
+      ${item.link ? `<a class="recipe-link" href="${item.link}" target="_blank">🔗 ver</a>` : ''}
+      <button class="del-btn" onclick="breakfasts.splice(${i},1); saveBreakfast(); renderBreakfast()">×</button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+async function saveBreakfast() {
+  await save('breakfasts', breakfasts);
+}
+
+async function addBreakfast() {
+  breakfasts.push({ name: '', link: '' });
+  await saveBreakfast();
+  renderBreakfast();
+}
+
+// --- INIT ---
+initTracker();
+initBreakfast();
+</script>
+</body>
+</html>
